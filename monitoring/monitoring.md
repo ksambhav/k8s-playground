@@ -1,0 +1,31 @@
+# How to setup Monitoring
+
+We will be using https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack for monitoring, logging
+and alerting requirements. This will help to profile a typical application resources footprint under load.
+
+```commandline
+helm repo add grafana https://grafana.github.io/helm-charts
+```
+
+```commandline
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+```
+
+```commandline
+helm repo update
+```
+
+```commandline
+kubectl create namespace monitoring
+```
+
+```commandline
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f monitoring/prom-values.yaml -n monitoring
+```
+
+```commandline
+helm install --values monitoring/loki-values.yaml loki --namespace=monitoring grafana/loki
+```
+
+(Optional)
+Import [Grafana Dashboard for typical Spring Boot applications](https://grafana.com/grafana/dashboards/12900-springboot-apm-dashboard/)

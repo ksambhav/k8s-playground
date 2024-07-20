@@ -1,0 +1,32 @@
+replicaCount: 1
+serviceMonitor:
+  # enabled should be set to true to enable prometheus-operator discovery of this service
+  enabled: false
+  multipleTarget:
+    enabled: true
+    targets:
+      - endpoint: mysql-db.mysql.svc.cluster.local
+        name: mysql1
+        port: 3306
+        user: exporter
+        password: password
+    sharedSecret:
+      enabled: true
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+annotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/path: "/metrics"
+  prometheus.io/port: "9104"
+
+# mysql connection params which build the my.cnf config
+mysql:
+  host: "mysql-db.mysql.svc.cluster.local"
+  additionalConfig:
+  pass: "password"
+  port: 3306
