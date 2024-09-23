@@ -27,5 +27,27 @@ helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheu
 helm install --values monitoring/loki-values.yaml loki --namespace=monitoring grafana/loki
 ```
 
+### Sample Pod Monitor
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: vaaladin-pod-monitor
+  labels:
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: vaaladin
+  podMetricsEndpoints:
+    - port: web
+      path: /actuator/prometheus
+      interval: 5s
+      scheme: http
+      tlsConfig:
+        insecureSkipVerify: true
+```
+
 (Optional)
 Import [Grafana Dashboard for typical Spring Boot applications](https://grafana.com/grafana/dashboards/12900-springboot-apm-dashboard/)

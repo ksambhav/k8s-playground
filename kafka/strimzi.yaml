@@ -19,7 +19,7 @@ spec:
     volumes:
       - id: 0
         type: persistent-claim
-        size: 10Gi
+        size: 5Gi
         kraftMetadata: shared
         deleteClaim: true
 ---
@@ -40,7 +40,7 @@ spec:
       # IMPORTANT: JBOD storage with multiple volumes in KRaft mode is supported only in Apache Kafka 3.7.0 and newer!
       - id: 0
         type: persistent-claim
-        size: 10Gi
+        size: 5Gi
         # Indicates that this directory will be used to store Kraft metadata log
         kraftMetadata: shared
         deleteClaim: true
@@ -63,8 +63,8 @@ metadata:
     strimzi.io/kraft: enabled
 spec:
   kafka:
-    version: 3.7.1
-    metadataVersion: 3.7-IV4
+    #    version: 3.7.1
+    #    metadataVersion: 3.7-IV4
     listeners:
       - name: plain
         port: 9092
