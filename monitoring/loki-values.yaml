@@ -7,12 +7,12 @@ loki:
     type: 'filesystem'
   schemaConfig:
     configs:
-      - from: "2024-01-01"
+      - from: "2025-03-09"
         store: tsdb
         index:
           prefix: loki_index_
           period: 24h
-        object_store: filesystem # we're storing on filesystem so there's no real persistence here.
+        object_store: filesystem
         schema: v13
 singleBinary:
   replicas: 1

@@ -24,7 +24,7 @@ helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheu
 ```
 
 ```commandline
-helm install --values monitoring/loki-values.yaml loki --namespace=monitoring grafana/loki
+helm upgrade --install --values monitoring/loki-values.yaml loki --namespace=monitoring grafana/loki
 ```
 
 ### Sample Pod Monitor
