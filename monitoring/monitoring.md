@@ -23,10 +23,6 @@ kubectl create namespace monitoring
 helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack -f monitoring/prom-values.yaml -n monitoring
 ```
 
-```commandline
-helm upgrade --install --values monitoring/loki-values.yaml loki --namespace=monitoring grafana/loki
-```
-
 ### Sample Pod Monitor
 
 ```yaml

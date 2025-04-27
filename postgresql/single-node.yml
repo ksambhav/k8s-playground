@@ -1,0 +1,15 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: mypostgres
+spec:
+  enableSuperuserAccess: true
+  instances: 1
+  storage:
+    size: 1Gi
+  bootstrap:
+    initdb:
+      database: samsoft
+      owner: samsoft
+#      secret:
+#        name: app-secret

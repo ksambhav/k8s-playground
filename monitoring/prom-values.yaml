@@ -357,7 +357,7 @@ global:
 
 windowsMonitoring:
   ## Deploys the windows-exporter and Windows-specific dashboards and rules (job name must be 'windows-exporter')
-  enabled: true
+  enabled: false
 
 ## Configuration for prometheus-windows-exporter
 ## ref: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-windows-exporter
@@ -367,7 +367,7 @@ prometheus-windows-exporter:
   ##
   prometheus:
     monitor:
-      enabled: true
+      enabled: false
       jobLabel: jobLabel
 
   releaseLabel: true
@@ -1861,7 +1861,7 @@ kube-state-metrics:
 ## Deploy node exporter as a daemonset to all nodes
 ##
 nodeExporter:
-  enabled: true
+  enabled: false
   hostRootFsMount:
     enabled: false
   operatingSystems:
