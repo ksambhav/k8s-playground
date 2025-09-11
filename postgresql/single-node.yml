@@ -1,15 +1,54 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: mypostgres
+  name: my-postgres-cluster
 spec:
-  enableSuperuserAccess: true
   instances: 1
   storage:
-    size: 1Gi
-  bootstrap:
-    initdb:
-      database: samsoft
-      owner: samsoft
-#      secret:
-#        name: app-secret
+    size: 3Gi
+  enableSuperuserAccess: true
+  monitoring:
+    enablePodMonitor: true
+  managed:
+    roles:
+      - name: app
+        login: true
+        createdb: false
+        createrole: true
+    services:
+      additional:
+        - selectorType: rw
+          serviceTemplate:
+            metadata:
+              name: "test-rw"
+              labels:
+                test-label: "true"
+              annotations:
+                test-annotation: "true"
+            spec:
+              type: LoadBalancer
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: justbookit
+spec:
+  name: justbookit
+  owner: app
+  cluster:
+    name: my-postgres-cluster
+  extensions:
+    - name: vector
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-nodeport
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+  selector:
+    app: pgadmin
