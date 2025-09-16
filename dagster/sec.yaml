@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  username: ZGFnc3Rlcg==
+  postgresql-username: ZGFnc3Rlcg==
+  password: ZGFnc3Rlcg==
+  postgresql-password: ZGFnc3Rlcg==
+kind: Secret
+metadata:
+  name: dagster-pg-secret
+  labels:
+    cnpg.io/reload: "true"
