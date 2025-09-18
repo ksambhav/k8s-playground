@@ -50,18 +50,18 @@ dagsterWebserver:
     servers:
       - host: "k8s-example-user-code-2"
         port: 3030
-        name: "k8s-example-user-code-2"
+        name: "cld_mapping"
   enableReadOnly: false
   dbStatementTimeout: 5000
   dbPoolRecycle: ~
   dbPoolMaxOverflow: ~
-  limits:
-    memory: 512Mi
-  requests:
-    cpu: 100m
-    memory: 256Mi
-  startupProbe:
-    enabled: true
+#  limits:
+#    memory: 512Mi
+#  requests:
+#    cpu: 100m
+#    memory: 256Mi
+#  startupProbe:
+#    enabled: true
 
 ####################################################################################################
 # Compute Log Manager: Configuration for the compute log manager.
@@ -173,7 +173,7 @@ scheduler:
 
     ## This configuration will only be used if the CustomScheduler is selected.
     ## Using this setting requires a custom webserver image that defines the user specified
-    ## scheduler in an installed python module.
+  ## scheduler in an installed python module.
   #   customScheduler:
   #     module: ~
   #     class: ~
