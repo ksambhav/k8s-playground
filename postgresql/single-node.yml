@@ -50,3 +50,13 @@ spec:
   owner: dagster
   cluster:
     name: my-postgres
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: samsoft
+spec:
+  name: samsoft
+  owner: samsoft
+  cluster:
+    name: my-postgres
