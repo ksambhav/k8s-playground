@@ -54,7 +54,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: spark.local
+    - host: spark-ui.local
       http:
         paths:
           - path: /

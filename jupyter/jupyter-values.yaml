@@ -79,7 +79,7 @@ hub:
   image:
     registry: docker.io
     repository: bitnami/jupyterhub
-    tag: 4.1.6-debian-12-r3
+    tag: latest
     digest: ""
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -1868,10 +1868,10 @@ postgresql:
 ## @param externalDatabase.existingSecretPasswordKey Name of an existing secret key containing the database credentials
 ##
 externalDatabase:
-  host: "my-postgres-postgresql.postgres.svc.cluster.local"
+  host: "my-postgres-rw.postgres.svc.cluster.local"
   port: 5432
-  user: jupyter
-  database: jupyterhub
-  password: "password"
+  user: dagster
+  database: dagster
+  password: "dagster"
 #  existingSecret: ""
 #  existingSecretPasswordKey: ""

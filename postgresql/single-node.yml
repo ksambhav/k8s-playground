@@ -40,6 +40,16 @@ spec:
           - pg_signal_backend
         passwordSecret:
           name: dagster-pg-secret
+      - name: jupyterhub
+        ensure: present
+        comment: Kumar Sambhav Jain
+        login: true
+        superuser: false
+        inRoles:
+          - pg_monitor
+          - pg_signal_backend
+        passwordSecret:
+          name: dagster-pg-secret
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
@@ -55,6 +65,16 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
   name: samsoft
+spec:
+  name: samsoft
+  owner: samsoft
+  cluster:
+    name: my-postgres
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: jupyterhub
 spec:
   name: samsoft
   owner: samsoft
