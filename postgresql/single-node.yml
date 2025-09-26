@@ -1,82 +1,49 @@
 apiVersion: v1
-data:
-  username: ZGFnc3Rlcg==
-  password: ZGFnc3Rlcg==
 kind: Secret
+type: kubernetes.io/basic-auth
 metadata:
-  name: dagster-pg-secret
+  name: role02-secret
+  namespace: db
   labels:
     cnpg.io/reload: "true"
+data:
+  username: cm9sZTAy
+  password: cGFzc3dvcmQ=
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: my-postgres
+  name: pg01-cluster
+  namespace: db
 spec:
   instances: 1
   storage:
-    size: 1Gi
-  bootstrap:
-    initdb:
-      database: samsoft
-      owner: samsoft
+    size: 5Gi
   managed:
     roles:
-      - name: samsoft
-        ensure: present
-        comment: Kumar Sambhav Jain
+      - name: role02
         login: true
-        superuser: true
-        inRoles:
-          - pg_monitor
-          - pg_signal_backend
-      - name: dagster
         ensure: present
-        comment: Kumar Sambhav Jain
-        login: true
         superuser: false
-        inRoles:
-          - pg_monitor
-          - pg_signal_backend
+        connectionLimit: 10
+        disablePassword: false
         passwordSecret:
-          name: dagster-pg-secret
-      - name: jupyterhub
-        ensure: present
-        comment: Kumar Sambhav Jain
-        login: true
-        superuser: false
-        inRoles:
-          - pg_monitor
-          - pg_signal_backend
-        passwordSecret:
-          name: dagster-pg-secret
+          name: role02-secret
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: dagster
+  name: db02
+  namespace: db
 spec:
-  name: dagster
-  owner: dagster
+  name: db02
+  owner: role02
+  schemas:
+    - name: balli
+      owner: role02
+  databaseReclaimPolicy: delete
   cluster:
-    name: my-postgres
----
-apiVersion: postgresql.cnpg.io/v1
-kind: Database
-metadata:
-  name: samsoft
-spec:
-  name: samsoft
-  owner: samsoft
-  cluster:
-    name: my-postgres
----
-apiVersion: postgresql.cnpg.io/v1
-kind: Database
-metadata:
-  name: jupyterhub
-spec:
-  name: samsoft
-  owner: samsoft
-  cluster:
-    name: my-postgres
+    name: pg01-cluster
+  extensions:
+    - name: bloom
+      ensure: present
