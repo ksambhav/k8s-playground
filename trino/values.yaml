@@ -23,12 +23,6 @@ worker:
 additionalConfigProperties:
   - http-server.process-forwarded=true
 catalogs:
-  #  tpch: |
-  #    connector.name=tpch
-  #    tpch.splits-per-node=4
-  #  tpcds: |
-  #    connector.name=tpcds
-  #    tpcds.splits-per-node=4
   wh01: |
     connector.name=iceberg
     iceberg.catalog.type=nessie
