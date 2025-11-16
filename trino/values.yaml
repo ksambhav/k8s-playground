@@ -32,9 +32,10 @@ catalogs:
   wh01: |
     connector.name=iceberg
     iceberg.catalog.type=nessie
+    iceberg.file-format=PARQUET
     iceberg.nessie-catalog.uri=http://nessie05:19120/api/v2
     iceberg.nessie-catalog.ref=main
-    iceberg.nessie-catalog.default-warehouse-dir=s3a://wh01
+    iceberg.nessie-catalog.default-warehouse-dir=s3://wh01/
     iceberg.register-table-procedure.enabled=true
     iceberg.query-partition-filter-required=true
     iceberg.object-store-layout.enabled=true

@@ -41,9 +41,9 @@ catalog:
     # warehouse must be defined.
     warehouses:
       - name: wh01
-        location: s3a://wh01/
+        location: s3://wh01/
       - name: wh02
-        location: s3a://wh02/
+        location: s3://wh02/
     objectStoresHealthCheckEnabled: true
   storage:
     s3:
@@ -63,9 +63,11 @@ catalog:
         - name: wh01
           pathPrefix: walla
           endpoint: "http://minio02:9000"
+          pathStyleAccess: true
         - name: wh02
           pathPrefix: bulla
           endpoint: "http://minio02:9000"
+          pathStyleAccess: true
 ingress:
   enabled: true
   className: "nginx"
