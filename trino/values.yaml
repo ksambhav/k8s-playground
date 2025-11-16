@@ -46,6 +46,23 @@ catalogs:
     s3.region=us-west-2
     s3.aws-access-key=admin
     s3.aws-secret-key=aciiHJsbJh
+  wh02: |
+    connector.name=iceberg
+    iceberg.catalog.type=rest
+    iceberg.file-format=PARQUET
+    iceberg.rest-catalog.uri=http://nessie05:19120/api/v2
+    iceberg.rest-catalog.uri=main
+    iceberg.rest-catalog.warehouse=s3://wh02/
+    iceberg.register-table-procedure.enabled=true
+    iceberg.query-partition-filter-required=true
+    iceberg.object-store-layout.enabled=true
+    iceberg.remove-orphan-files.min-retention=1d
+    fs.native-s3.enabled=true
+    s3.endpoint=http://minio02:9000
+    s3.path-style-access=true
+    s3.region=us-west-2
+    s3.aws-access-key=admin
+    s3.aws-secret-key=aciiHJsbJh
 ingress:
   enabled: true
   className: "nginx"
