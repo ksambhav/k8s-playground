@@ -47,3 +47,21 @@ spec:
   extensions:
     - name: bloom
       ensure: present
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: nessiedb
+  namespace: db
+spec:
+  name: nessiedb
+  owner: role02
+  schemas:
+    - name: nessie
+      owner: role02
+  databaseReclaimPolicy: delete
+  cluster:
+    name: pg01-cluster
+  extensions:
+    - name: bloom
+      ensure: present
