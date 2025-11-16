@@ -50,8 +50,7 @@ catalogs:
     connector.name=iceberg
     iceberg.catalog.type=rest
     iceberg.file-format=PARQUET
-    iceberg.rest-catalog.uri=http://nessie05:19120/api/v2
-    iceberg.rest-catalog.uri=main
+    iceberg.rest-catalog.uri=http://nessie05:19120/iceberg
     iceberg.rest-catalog.warehouse=s3://wh02/
     iceberg.register-table-procedure.enabled=true
     iceberg.query-partition-filter-required=true

@@ -28,7 +28,6 @@ jdbc:
     # -- The secret key storing the datasource password.
     password: password
 catalog:
-
   # -- Whether to enable the REST catalog service.
   enabled: true
   # -- Iceberg catalog settings.
