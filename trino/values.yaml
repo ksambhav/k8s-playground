@@ -23,12 +23,27 @@ worker:
 additionalConfigProperties:
   - http-server.process-forwarded=true
 catalogs:
-  tpch: |
-    connector.name=tpch
-    tpch.splits-per-node=4
-  tpcds: |
-    connector.name=tpcds
-    tpcds.splits-per-node=4
+  #  tpch: |
+  #    connector.name=tpch
+  #    tpch.splits-per-node=4
+  #  tpcds: |
+  #    connector.name=tpcds
+  #    tpcds.splits-per-node=4
+  wh01: |
+    connector.name=iceberg
+    iceberg.catalog.type=nessie
+    iceberg.nessie-catalog.uri=http://nessie05:19120/api/v2
+    iceberg.nessie-catalog.ref=main
+    iceberg.nessie-catalog.default-warehouse-dir=s3a://wh01
+    iceberg.register-table-procedure.enabled=true
+    iceberg.query-partition-filter-required=true
+    iceberg.object-store-layout.enabled=true
+    iceberg.remove-orphan-files.min-retention=1d
+    fs.native-s3.enabled=true
+    s3.endpoint=http://minio02:9000
+    s3.region=us-west-2
+    s3.aws-access-key=admin
+    s3.aws-secret-key=aciiHJsbJh
 ingress:
   enabled: true
   className: "nginx"

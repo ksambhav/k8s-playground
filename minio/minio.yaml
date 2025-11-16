@@ -1,5 +1,5 @@
 ingress:
-  enabled: true
+  enabled: false
   ingressClassName: "nginx"
   hostname: minio.local
 metrics:
@@ -9,8 +9,8 @@ console:
   ingress:
     enabled: true
     ingressClassName: "nginx"
-    hostname: minio.local
+    hostname: minio-console.local
 auth:
   forceNewKeys: true
   useSecret: true
-mode: distributed
+mode: standalone
