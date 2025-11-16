@@ -1,0 +1,39 @@
+server:
+  workers: 1
+  node:
+    environment: production
+  log:
+    trino:
+      level: WARN
+  config:
+    http-server.process-forwarded: true
+    query:
+      maxMemory: "4GB"
+  autoscaling:
+    enabled: false
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 50
+    targetMemoryUtilizationPercentage: 80
+coordinator:
+  config:
+    http-server.process-forwarded: "true"
+worker:
+  config:
+    http-server.process-forwarded: "true"
+additionalConfigProperties:
+  - http-server.process-forwarded=true
+catalogs:
+  tpch: |
+    connector.name=tpch
+    tpch.splits-per-node=4
+  tpcds: |
+    connector.name=tpcds
+    tpcds.splits-per-node=4
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: trino.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
