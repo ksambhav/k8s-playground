@@ -59,15 +59,15 @@ catalog:
           awsAccessKeyId: root-user
           # -- The secret key storing the AWS secret access key.
           awsSecretAccessKey: root-password
-      buckets:
-        - name: wh01
-          pathPrefix: walla
-          endpoint: "http://minio02:9000"
-          pathStyleAccess: true
-        - name: wh02
-          pathPrefix: bulla
-          endpoint: "http://minio02:9000"
-          pathStyleAccess: true
+#      buckets:
+#        - name: wh01
+#          pathPrefix: walla
+#          endpoint: "http://minio02:9000"
+#          pathStyleAccess: true
+#        - name: wh02
+#          pathPrefix: bulla
+#          endpoint: "http://minio02:9000"
+#          pathStyleAccess: true
 ingress:
   enabled: true
   className: "nginx"
