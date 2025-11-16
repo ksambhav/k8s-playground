@@ -22,3 +22,11 @@ webpack.generated.js
 
 target
 **/target
+
+logs
+.venv
+
+
+target/
+dbt_packages/
+logs/

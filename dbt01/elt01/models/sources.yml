@@ -1,0 +1,7 @@
+version: 2
+sources:
+  - name: db02
+    database: db02
+    schema: public
+    tables:
+      - name: employee

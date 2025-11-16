@@ -1,0 +1,12 @@
+elt01:
+  outputs:
+    dev:
+      type: trino
+      method: none
+      user: trino
+      host: trino.local
+      port: 80
+      database: wh02
+      schema: samsoft
+      threads: 2
+  target: dev
