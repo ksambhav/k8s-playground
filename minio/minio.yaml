@@ -9,9 +9,8 @@ console:
   ingress:
     enabled: true
     ingressClassName: "nginx"
-    hostname: minio-console.local
+    hostname: minio.local
 auth:
-  rootPassword: password
-  rootUser: admin
   forceNewKeys: true
-  useSecret: false
+  useSecret: true
+mode: distributed
