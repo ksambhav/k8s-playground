@@ -25,7 +25,7 @@ spec:
         login: true
         ensure: present
         superuser: false
-        connectionLimit: 10
+        connectionLimit: 20
         disablePassword: false
         passwordSecret:
           name: role02-secret
