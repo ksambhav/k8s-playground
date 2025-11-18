@@ -3,7 +3,7 @@
         pre_hook="set session query_max_run_time='10m'",
         materialized='table',
         properties= {
-          "object_store_layout_enabled" : false,
+          "object_store_layout_enabled" : true,
           "format": "'PARQUET'",
           "partitioning": "ARRAY['id']",
           "sorted_by ": "ARRAY['name DESC NULLS FIRST']",

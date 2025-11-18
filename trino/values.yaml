@@ -1,5 +1,5 @@
 server:
-  workers: 2
+  workers: 1
   node:
     environment: production
   log:
@@ -17,9 +17,21 @@ server:
 coordinator:
   config:
     http-server.process-forwarded: "true"
+  jvm:
+    maxHeapSize: "1G"
+    gcMethod:
+      type: "UseG1GC"
+      g1:
+        heapRegionSize: "32M"
 worker:
   config:
     http-server.process-forwarded: "true"
+  jvm:
+    maxHeapSize: "2G"
+    gcMethod:
+      type: "UseG1GC"
+      g1:
+        heapRegionSize: "32M"
 additionalConfigProperties:
   - http-server.process-forwarded=true
 catalogs:
