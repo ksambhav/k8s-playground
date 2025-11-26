@@ -7,8 +7,6 @@ server:
       level: WARN
   config:
     http-server.process-forwarded: true
-    query:
-      maxMemory: "4GB"
   autoscaling:
     enabled: false
     maxReplicas: 5
@@ -18,7 +16,7 @@ coordinator:
   config:
     http-server.process-forwarded: "true"
   jvm:
-    maxHeapSize: "1G"
+    maxHeapSize: "2G"
     gcMethod:
       type: "UseG1GC"
       g1:
