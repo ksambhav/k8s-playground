@@ -1,0 +1,46 @@
+operator:
+  timeZone: "UTC"
+starrocks:
+  timeZone: "UTC"
+  starrocksCluster:
+    name: sr01
+    namespace: mydp
+    enabledBe: true
+    enabledFe: true
+    enabledCn: false
+    componentValues:
+      image:
+        tag: "4.0-latest"
+  starrocksFESpec:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 1
+        memory: 2Gi
+  starrocksCnSpec:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 1
+        memory: 2Gi
+  starrocksBeSpec:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 2
+        memory: 4Gi
+      limits:
+        cpu: 3
+        memory: 8Gi
+    config: |
+      enable_datacache=true
+  starrocksFeProxySpec:
+    enabled: true
+    service:
+      type: NodePort
