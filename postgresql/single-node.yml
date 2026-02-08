@@ -2,66 +2,47 @@ apiVersion: v1
 kind: Secret
 type: kubernetes.io/basic-auth
 metadata:
-  name: role02-secret
-  namespace: db
+  name: secret-pg-samsoft
   labels:
     cnpg.io/reload: "true"
 data:
-  username: cm9sZTAy
+  username: c2Ftc29mdAo=
   password: cGFzc3dvcmQ=
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: pg01-cluster
-  namespace: db
+  name: cluster01
 spec:
   instances: 1
   storage:
     size: 5Gi
   managed:
     roles:
-      - name: role02
+      - name: samsoft
         login: true
         ensure: present
         superuser: false
         connectionLimit: 20
         disablePassword: false
         passwordSecret:
-          name: role02-secret
+          name: secret-pg-samsoft
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: db02
-  namespace: db
+  name: db01
 spec:
-  name: db02
-  owner: role02
+  name: db01
+  owner: samsoft
   schemas:
     - name: balli
-      owner: role02
+      owner: samsoft
+    - name: balle
+      owner: samsoft
   databaseReclaimPolicy: delete
   cluster:
-    name: pg01-cluster
-  extensions:
-    - name: bloom
-      ensure: present
----
-apiVersion: postgresql.cnpg.io/v1
-kind: Database
-metadata:
-  name: nessiedb
-  namespace: db
-spec:
-  name: nessiedb
-  owner: role02
-  schemas:
-    - name: nessie
-      owner: role02
-  databaseReclaimPolicy: delete
-  cluster:
-    name: pg01-cluster
+    name: cluster01
   extensions:
     - name: bloom
       ensure: present

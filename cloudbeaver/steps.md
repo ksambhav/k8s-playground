@@ -7,5 +7,5 @@ helm repo add avisto https://avistotelecom.github.io/charts/
 ```
 
 ```shell
-helm upgrade --install cloudbeaver avisto/cloudbeaver --create-namespace -n db -f cloudbeaver/beaver.yaml
+helm upgrade --install cloudbeaver avisto/cloudbeaver --create-namespace -n mydp -f cloudbeaver/beaver.yaml
 ```
