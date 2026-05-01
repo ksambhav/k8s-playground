@@ -1,16 +1,21 @@
-### Install Kafka using [Strimzi](https://strimzi.io/)
+## Strimzi Operator Helm
 
-```commandline
-kubectl create namespace kafka
+```shell
+helm upgrade --install my-strimzi-kafka-operator oci://quay.io/strimzi-helm/strimzi-kafka-operator -n kafka
 ```
 
-```commandline
-kubectl create -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
+```shell
+helm repo add akhq https://akhq.io/
 ```
 
-```commandline
-kubectl apply -f kafka\strimzi.yaml -n kafka
+```shell
+helm upgrade --install akhq akhq/akhq --namespace kafka -f akhq.yaml
 ```
 
-Import Strimzi curated Grafana Dashboard
-from https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/metrics/grafana-dashboards
+```shell
+kubectl create secret docker-registry ghcr-auth \
+    --docker-server=https://ghcr.io \
+    --docker-username=YOUR_GITHUB_USERNAME \
+    --docker-password=YOUR_PERSONAL_ACCESS_TOKEN \
+    --docker-email=YOUR_EMAIL
+```

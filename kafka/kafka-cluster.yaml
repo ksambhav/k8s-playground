@@ -1,0 +1,98 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaNodePool
+metadata:
+  name: my-kafka-nodepool
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  replicas: 3
+  roles:
+    - broker
+    - controller
+  storage:
+    type: jbod
+    volumes:
+      - id: 0
+        type: persistent-claim
+        size: 10Gi
+        kraftMetadata: shared
+---
+apiVersion: kafka.strimzi.io/v1
+kind: Kafka
+metadata:
+  name: my-cluster
+spec:
+  kafka:
+    version: 4.2.0
+    metadataVersion: 4.2-IV1
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+    #      - name: tls
+    #        port: 9093
+    #        type: internal
+    #        tls: false
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      default.replication.factor: 3
+      min.insync.replicas: 2
+      process.roles: "broker,controller"
+  entityOperator:
+    topicOperator: { }
+    userOperator: { }
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaConnect
+metadata:
+  name: my-connect-cluster
+  annotations:
+    # This annotation is often required for Strimzi to trigger the build
+    strimzi.io/use-connector-resources: "true"
+spec:
+  version: 4.2.0
+  replicas: 2
+  bootstrapServers: my-cluster-kafka-bootstrap:9092
+  groupId: my-connect-group
+  template:
+    pod:
+      imagePullSecrets:
+        - name: ghcr-auth
+  build:
+    output:
+      type: docker
+      image: ghcr.io/ksambhav/strimzi-connect-debezium:0.0.1
+      pushSecret: ghcr-auth
+    plugins:
+      - name: debezium-postgres-connector
+        artifacts:
+          - type: tgz
+            url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/3.5.0.Final/debezium-connector-postgres-3.5.0.Final-plugin.tar.gz
+  configStorageTopic: my-connect-configs
+  statusStorageTopic: my-connect-status
+  offsetStorageTopic: my-connect-offsets
+  config:
+    group.id: connect-cluster
+    config.storage.replication.factor: 1
+    offset.storage.replication.factor: 1
+    status.storage.replication.factor: 1
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: akhq-route
+  namespace: kafka
+spec:
+  parentRefs:
+    - name: local-gateway
+      namespace: nginx-gateway
+  hostnames:
+    - akhq.local
+  rules:
+    - backendRefs:
+        - name: akhq
+          namespace: kafka
+          port: 80

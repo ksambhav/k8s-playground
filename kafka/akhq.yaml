@@ -1,0 +1,26 @@
+configuration:
+  akhq:
+    connections:
+      # This name will show up in the UI dropdown
+      my-kafka-cluster:
+        properties:
+          bootstrap.servers: "my-cluster-kafka-bootstrap:9092"
+#        # Optional: Add Schema Registry if you are using it
+#        schema-registry:
+#          url: "http://my-cluster-schema-registry:8081"
+#        # Optional: Add Kafka Connect
+#        connect:
+#          - name: "connect-cluster"
+#            url: "http://my-cluster-connect:8083"
+
+service:
+  type: ClusterIP # Change to NodePort or LoadBalancer if you don't use Ingress
+  port: 80
+
+# Optional: Enable Ingress if you have an Ingress Controller
+ingress:
+  enabled: false
+  # hosts:
+  #   - host: akhq.local
+  #     paths:
+  #       - /
