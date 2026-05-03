@@ -7,6 +7,7 @@ yamlApplicationConfig:
         kafka-connect:
           - name: my-connect-cluster
             address: http://my-connect-cluster-connect-api.kafka.svc:8083
+        schemaRegistry: http://schema-registry:8081
 resources:
   limits:
     cpu: 500m
