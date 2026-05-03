@@ -61,10 +61,18 @@ spec:
     pod:
       imagePullSecrets:
         - name: ghcr-auth
+    buildPod:
+      metadata:
+        labels:
+          build-type: custom-connector
+      securityContext:
+        runAsNonRoot: false
+        appArmorProfile:
+          type: Unconfined
   build:
     output:
       type: docker
-      image: ghcr.io/ksambhav/strimzi-connect-debezium:0.0.1
+      image: ghcr.io/ksambhav/strimzi-connect-debezium:0.0.2
       pushSecret: ghcr-auth
     plugins:
       - name: debezium-postgres-connector
