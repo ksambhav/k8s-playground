@@ -359,6 +359,13 @@ metadata:
   labels:
     strimzi.io/cluster: my-cluster
 spec:
+  resources:
+    requests:
+      memory: 12Gi
+      cpu: "2"
+    limits:
+      memory: 15Gi
+      cpu: "4"
   replicas: 3
   roles:
     - broker
@@ -455,6 +462,13 @@ spec:
       configMapKeyRef:
         name: connect-metrics
         key: metrics-config.yml
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "2"
+      memory: 4Gi
 ---
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaConnector
@@ -482,6 +496,7 @@ spec:
     snapshot.mode: "no_data"
     time.precision.mode: "adaptive"
     interval.handling.mode: "string"
+    errors.tolerance: "fail"
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
