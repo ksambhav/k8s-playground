@@ -19,7 +19,3 @@ helm repo add kafka-ui https://ui.charts.kafbat.io/
 ```shell
 helm upgrade --install my-kafka-ui kafka-ui/kafka-ui -n kafka -f kafbat.yaml
 ```
-
-```shell
-helm upgrade --install my-schema-registry oci://registry-1.docker.io/bitnamicharts/schema-registry -f bitnami-regsitry.yaml -n kafka
-```

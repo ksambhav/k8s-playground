@@ -414,7 +414,7 @@ metadata:
     strimzi.io/use-connector-resources: "true"
 spec:
   version: 4.2.0
-  replicas: 2
+  replicas: 3
   bootstrapServers: my-cluster-kafka-bootstrap:9092
   groupId: my-connect-group
   template:
