@@ -3,8 +3,8 @@ operator:
 starrocks:
   timeZone: "UTC"
   starrocksCluster:
-    name: sr01
-    namespace: mydp
+    name: sr04
+    namespace: db
     enabledBe: true
     enabledFe: true
     enabledCn: false
@@ -16,10 +16,10 @@ starrocks:
     resources:
       requests:
         cpu: 500m
-        memory: 1Gi
+        memory: 2Gi
       limits:
         cpu: 1
-        memory: 2Gi
+        memory: 3Gi
   starrocksCnSpec:
     replicas: 1
     resources:
@@ -33,14 +33,20 @@ starrocks:
     replicas: 1
     resources:
       requests:
-        cpu: 2
+        cpu: 1
         memory: 4Gi
       limits:
-        cpu: 3
+        cpu: 2
         memory: 8Gi
     config: |
       enable_datacache=true
   starrocksFeProxySpec:
     enabled: true
     service:
-      type: NodePort
+      type: LoadBalancer
+  metrics:
+    serviceMonitor:
+      enabled: true
+      labels:
+        release: kube-prometheus-stack
+      interval: 5s

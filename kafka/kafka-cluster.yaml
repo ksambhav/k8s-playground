@@ -446,6 +446,10 @@ spec:
         artifacts:
           - type: tgz
             url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/3.5.0.Final/debezium-connector-postgres-3.5.0.Final-plugin.tar.gz
+      - name: starrocks-sink-connector
+        artifacts:
+          - type: jar
+            url: https://github.com/StarRocks/starrocks-connector-for-kafka/releases/download/v1.0.6/starrocks-connector-for-kafka-1.0.6-with-dependencies.jar
   configStorageTopic: my-connect-configs
   statusStorageTopic: my-connect-status
   offsetStorageTopic: my-connect-offsets
@@ -497,6 +501,34 @@ spec:
     time.precision.mode: "adaptive"
     interval.handling.mode: "string"
     errors.tolerance: "fail"
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaConnector
+metadata:
+  name: my-starrocks-sink-connector
+  labels:
+    strimzi.io/cluster: my-connect-cluster
+spec:
+  class: com.starrocks.connector.kafka.StarRocksSinkConnector
+  tasksMax: 1
+  config:
+    topics.regex: "db01.public.*"
+    starrocks.http.url: "http://sr04-fe-proxy-service.db.svc.cluster.local:8080"
+    starrocks.database.name: "dev01"
+    starrocks.username: "root"
+    starrocks.password: ""
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    tasks.max: "3"
+    bufferflush.intervalms: 2000
+    sink.properties.strip_outer_array: true
+    connect.timeoutms: 3000
+    starrocks.topic2table.map: "db01.public.orders:raw_orders"
+    transforms: addfield,unwrap
+    transforms.addfield.type: com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord
+    transforms.unwrap.type: io.debezium.transforms.ExtractNewRecordState
+    ransforms.unwrap.drop.tombstones: true
+    transforms.unwrap.delete.handling.mode: rewrite
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
