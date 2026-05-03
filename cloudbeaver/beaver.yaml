@@ -1,5 +1,2 @@
 ingress:
-  enabled: true
-  ingressClassName: "nginx"
-  hostname: "cloudbeaver.local"
-  tls: false
+  enabled: false

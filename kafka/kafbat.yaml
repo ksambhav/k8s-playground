@@ -1,0 +1,16 @@
+replicaCount: 2
+yamlApplicationConfig:
+  kafka:
+    clusters:
+      - name: my-kafka
+        bootstrapServers: my-cluster-kafka-bootstrap:9092
+        kafka-connect:
+          - name: my-connect-cluster
+            address: http://my-connect-cluster-connect-api.kafka.svc:8083
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+  memory: 256Mi

@@ -22,7 +22,7 @@ spec:
       - name: samsoft
         login: true
         ensure: present
-        superuser: false
+        superuser: true
         connectionLimit: 20
         disablePassword: false
         passwordSecret:

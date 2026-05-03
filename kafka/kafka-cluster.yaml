@@ -87,20 +87,49 @@ spec:
     config.storage.replication.factor: 1
     offset.storage.replication.factor: 1
     status.storage.replication.factor: 1
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaConnector
+metadata:
+  name: my-postgres-connector
+  labels:
+    strimzi.io/cluster: my-connect-cluster
+spec:
+  class: io.debezium.connector.postgresql.PostgresConnector
+  tasksMax: 1
+  config:
+    database.hostname: cluster01-rw.db.svc.cluster.local
+    database.port: "5432"
+    database.user: "samsoft"
+    database.password: "password"
+    database.dbname: "db01"
+    # Logical decoding settings
+    topic.prefix: "db01"
+    plugin.name: "pgoutput"
+    slot.name: "debezium_slot"
+    publication.name: "dbz_publication"
+    table.include.list: "public.orders"
+    # Conversion and snapshotting
+    decimal.handling.mode: "double"
+    snapshot.mode: "no_data"
+    time.precision.mode: "adaptive"
+    interval.handling.mode: "string"
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: akhq-route
+  name: kafbat-route
   namespace: kafka
 spec:
   parentRefs:
     - name: local-gateway
       namespace: nginx-gateway
   hostnames:
-    - akhq.local
+    - kafbat.local
   rules:
     - backendRefs:
-        - name: akhq
+        - name: my-kafka-ui
           namespace: kafka
           port: 80
