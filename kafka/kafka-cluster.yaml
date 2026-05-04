@@ -500,7 +500,7 @@ spec:
     snapshot.mode: "no_data"
     time.precision.mode: "isostring"
     interval.handling.mode: "string"
-    errors.tolerance: "fail"
+    errors.tolerance: "none"
 ---
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaConnector
