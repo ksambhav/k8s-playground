@@ -498,7 +498,7 @@ spec:
     # Conversion and snapshotting
     decimal.handling.mode: "double"
     snapshot.mode: "no_data"
-    time.precision.mode: "adaptive"
+    time.precision.mode: "isostring"
     interval.handling.mode: "string"
     errors.tolerance: "fail"
 ---
