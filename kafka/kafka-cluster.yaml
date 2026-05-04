@@ -505,7 +505,7 @@ spec:
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaConnector
 metadata:
-  name: my-starrocks-sink-connector
+  name: my-starrocks-sink-connector-v2
   labels:
     strimzi.io/cluster: my-connect-cluster
 spec:
