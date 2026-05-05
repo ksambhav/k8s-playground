@@ -1,7 +1,7 @@
-replicaCount: 1
+replicaCount: 2
 yamlApplicationConfig:
   webclient:
-    max-in-memory-buffer-size: 20MB
+    max-in-memory-buffer-size: 200MB
   kafka:
     clusters:
       - name: my-kafka
@@ -9,6 +9,7 @@ yamlApplicationConfig:
         kafka-connect:
           - name: my-connect-cluster
             address: http://my-connect-cluster-connect-api.kafka.svc.cluster.local:8083
+        schemaRegistry: http://karapace-schema-registry:8081
 resources:
   limits:
     cpu: 2

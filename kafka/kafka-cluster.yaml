@@ -595,3 +595,73 @@ spec:
         - name: my-kafka-ui
           namespace: kafka
           port: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karapace
+  namespace: kafka
+  labels:
+    app: karapace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: karapace
+  template:
+    metadata:
+      labels:
+        app: karapace
+    spec:
+      containers:
+        - name: karapace
+          image: ghcr.io/aiven/karapace:latest
+          command: [ "/bin/sh", "-c" ]
+          args:
+            # This executes the script for the registry and rest proxy in parallel
+            - "/opt/karapace/start.sh registry"
+          ports:
+            - containerPort: 8081
+              name: schema-registry
+            - containerPort: 8082
+              name: rest-proxy
+          env:
+            - name: KARAPACE_LOG_LEVEL
+              value: "WARN"
+            - name: KARAPACE_BOOTSTRAP_URI
+              value: "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+            - name: KARAPACE_KARAPACE_REGISTRY
+              value: "true"
+            - name: KARAPACE_ADVERTISED_HOSTNAME
+              value: "karapace-schema-registry.kafka.svc.cluster.local"
+            - name: KARAPACE_HOST
+              value: "0.0.0.0"
+            - name: KARAPACE_TOPIC_NAME
+              value: "schemaz"
+            - name: KARAPACE_ADVERTISED_PROTOCOL
+              value: "http"
+#            - name: KARAPACE_REST_REGISTRY_PORT
+#              value: "8082"
+#            - name: KARAPACE_REST_PORT
+#              value: "8081"
+#            - name: KARAPACE_PORT
+#              value: "8081"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: karapace-schema-registry
+  namespace: kafka
+spec:
+  type: ClusterIP
+  selector:
+    app: karapace  # This must match the label in your Deployment
+  ports:
+    - name: schema-registry
+      protocol: TCP
+      port: 8082        # The port accessed by other pods
+      targetPort: 8082  # The port the container is listening on
+    - name: schema-rest
+      protocol: TCP
+      port: 8081        # The port accessed by other pods
+      targetPort: 8081  # The port the container is listening on
