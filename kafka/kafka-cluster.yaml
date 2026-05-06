@@ -439,15 +439,13 @@ spec:
   build:
     output:
       type: docker
-      image: ghcr.io/ksambhav/strimzi-connect-debezium:0.0.2
+      image: ghcr.io/ksambhav/strimzi-connect-debezium:0.0.4
       pushSecret: ghcr-auth
     plugins:
       - name: confluent-avro-converter
         artifacts:
-          - type: maven
-            group: io.confluent
-            artifact: kafka-connect-avro-converter
-            version: 8.2.0
+          - type: zip
+            url: https://hub-downloads.confluent.io/api/plugins/confluentinc/kafka-connect-avro-converter/versions/8.2.0/confluentinc-kafka-connect-avro-converter-8.2.0.zip
       - name: debezium-postgres-connector
         artifacts:
           - type: tgz

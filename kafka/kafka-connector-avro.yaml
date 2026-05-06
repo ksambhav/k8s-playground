@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaConnector
 metadata:
-  name: my-postgres-connector-avro
+  name: my-postgres-connector-avro-v2
   labels:
     strimzi.io/cluster: my-connect-cluster
 spec:
@@ -14,10 +14,10 @@ spec:
     database.password: "password"
     database.dbname: "db01"
     # Logical decoding settings
-    topic.prefix: "db01"
+    topic.prefix: "avro"
     plugin.name: "pgoutput"
-    slot.name: "debezium_slot"
-    publication.name: "dbz_publication"
+    slot.name: "debezium_slot_v2"
+    publication.name: "dbz_publication_v2"
     table.include.list: "public.orders"
     # Conversion and snapshotting
     decimal.handling.mode: "double"
