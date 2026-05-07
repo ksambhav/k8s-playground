@@ -3,11 +3,11 @@ operator:
 starrocks:
   timeZone: "UTC"
   starrocksCluster:
-    name: sr04
+    name: sr06
     namespace: db
     enabledBe: true
     enabledFe: true
-    enabledCn: false
+    enabledCn: true
     componentValues:
       image:
         tag: "4.0-latest"

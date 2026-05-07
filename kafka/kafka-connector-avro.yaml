@@ -33,31 +33,32 @@ spec:
 
     # Key converter (Optional: keep as String or move to Avro if needed)
     key.converter: org.apache.kafka.connect.storage.StringConverter
-#---
-#apiVersion: kafka.strimzi.io/v1
-#kind: KafkaConnector
-#metadata:
-#  name: my-starrocks-sink-connector-v2
-#  labels:
-#    strimzi.io/cluster: my-connect-cluster
-#spec:
-#  class: com.starrocks.connector.kafka.StarRocksSinkConnector
-#  tasksMax: 1
-#  config:
-#    topics.regex: "db01.public.*"
-#    starrocks.http.url: "http://sr04-fe-proxy-service.db.svc.cluster.local:8080"
-#    starrocks.database.name: "dev01"
-#    starrocks.username: "root"
-#    starrocks.password: ""
-#    key.converter: org.apache.kafka.connect.storage.StringConverter
-#    value.converter: org.apache.kafka.connect.json.JsonConverter
-#    tasks.max: "3"
-#    bufferflush.intervalms: 2000
-#    sink.properties.strip_outer_array: true
-#    connect.timeoutms: 3000
-#    starrocks.topic2table.map: "db01.public.orders:raw_orders"
-#    transforms: addfield,unwrap
-#    transforms.addfield.type: com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord
-#    transforms.unwrap.type: io.debezium.transforms.ExtractNewRecordState
-#    ransforms.unwrap.drop.tombstones: true
-#    transforms.unwrap.delete.handling.mode: rewrite
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaConnector
+metadata:
+  name: my-starrocks-sink-connector-avro
+  labels:
+    strimzi.io/cluster: my-connect-cluster
+spec:
+  class: com.starrocks.connector.kafka.StarRocksSinkConnector
+  tasksMax: 1
+  config:
+    topics.regex: "avro.public.*"
+    starrocks.http.url: "http://sr06-fe-proxy-service.db.svc.cluster.local:8080"
+    starrocks.database.name: "dev01"
+    starrocks.username: "root"
+    starrocks.password: ""
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter: io.confluent.connect.avro.AvroConverter
+    tasks.max: "3"
+    bufferflush.intervalms: 2000
+    sink.properties.strip_outer_array: true
+    connect.timeoutms: 3000
+    starrocks.topic2table.map: "avro.public.orders:raw_orders"
+    transforms: addfield,unwrap
+    transforms.addfield.type: com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord
+    transforms.unwrap.type: io.debezium.transforms.ExtractNewRecordState
+    ransforms.unwrap.drop.tombstones: true
+    transforms.unwrap.delete.handling.mode: rewrite
+    value.converter.schema.registry.url: http://karapace-schema-registry:8081

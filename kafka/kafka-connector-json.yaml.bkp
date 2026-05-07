@@ -1,0 +1,27 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaConnector
+metadata:
+  name: my-postgres-connector
+  labels:
+    strimzi.io/cluster: my-connect-cluster
+spec:
+  class: io.debezium.connector.postgresql.PostgresConnector
+  tasksMax: 1
+  config:
+    database.hostname: cluster01-rw.db.svc.cluster.local
+    database.port: "5432"
+    database.user: "samsoft"
+    database.password: "password"
+    database.dbname: "db01"
+    # Logical decoding settings
+    topic.prefix: "db01"
+    plugin.name: "pgoutput"
+    slot.name: "debezium_slot"
+    publication.name: "dbz_publication"
+    table.include.list: "public.orders"
+    # Conversion and snapshotting
+    decimal.handling.mode: "double"
+    snapshot.mode: "no_data"
+    time.precision.mode: "isostring"
+    interval.handling.mode: "string"
+    errors.tolerance: "none"
