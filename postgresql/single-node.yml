@@ -15,6 +15,17 @@ metadata:
   name: cluster01
 spec:
   instances: 1
+  imageName: localhost:32000/my-postgres:18
+  postgresql:
+    shared_preload_libraries:
+      - "pg_cron"
+    parameters:
+      "cron.database_name": "postgres"
+      "pgaudit.log": "all, -misc"
+      "pgaudit.log_catalog": "off"
+      "pgaudit.log_parameter": "on"
+      "pgaudit.log_relation": "on"
+      "auto_explain.log_min_duration": "10s"
   storage:
     size: 5Gi
   managed:
@@ -45,4 +56,6 @@ spec:
     name: cluster01
   extensions:
     - name: bloom
+      ensure: present
+    - name: pg_cron
       ensure: present
