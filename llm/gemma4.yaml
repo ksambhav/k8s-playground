@@ -1,0 +1,73 @@
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: Model
+metadata:
+  name: gemma-4-e4b
+  namespace: llm
+spec:
+  source: 'https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/main/gemma-4-E4B-it-Q4_K_M.gguf'
+  format: gguf
+  quantization: Q4_K_M
+  hardware:
+    accelerator: cpu
+  resources:
+    cpu: "1"
+    memory: 3Gi
+---
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: InferenceService
+metadata:
+  name: gemma-4-e4b-inference
+  namespace: llm
+spec:
+  modelRef: gemma-4-e4b
+  runtime: llamacpp
+  replicas: 1
+  contextSize: 40960
+  flashAttention: true
+  resources:
+    cpu: "6"
+    memory: 40Gi
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: gemma-llm-backend
+  namespace: llm
+spec:
+  static:
+    host: gemma-4-e4b-inference.llm.svc.cluster.local
+    port: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: inference-gateway
+  namespace: llm
+spec:
+  gatewayClassName: agentgateway
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: gemma-inference-route
+  namespace: llm
+spec:
+  parentRefs:
+    - name: inference-gateway
+      namespace: llm
+  hostnames:
+    - "myllm.local"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - group: agentgateway.dev
+          kind: AgentgatewayBackend
+          name: gemma-llm-backend
+          port: 8080

@@ -17,3 +17,4 @@
 127.0.0.1 minio.local
 127.0.0.1 nessie.local
 127.0.0.1 minio-console.local
+127.0.0.1 llm.local
