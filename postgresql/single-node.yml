@@ -10,13 +10,32 @@ data:
   password: cGFzc3dvcmQ=
 ---
 apiVersion: postgresql.cnpg.io/v1
+kind: ImageCatalog
+metadata:
+  name: postgresql-18
+spec:
+  images:
+    - major: 18
+      image: ghcr.io/cloudnative-pg/postgresql:18-minimal-trixie
+      extensions:
+        - name: pgvector
+          image:
+            reference: ghcr.io/cloudnative-pg/pgvector:0.8.6-202609161208-18-trixie
+---
+apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: cluster01
+  name: pg01
 spec:
   instances: 1
-  imageName: localhost:32000/my-postgres:18
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ImageCatalog
+    name: postgresql-18
+    major: 18
   postgresql:
+    extensions:
+      - name: pgvector
     shared_preload_libraries:
       - "pg_cron"
     parameters:
@@ -42,20 +61,22 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: db01
+  name: bizsure
 spec:
-  name: db01
+  name: bizsure
   owner: samsoft
   schemas:
-    - name: balli
-      owner: samsoft
-    - name: balle
+    - name: warehouse
       owner: samsoft
   databaseReclaimPolicy: delete
   cluster:
-    name: cluster01
+    name: pg01
   extensions:
     - name: bloom
       ensure: present
     - name: pg_cron
+      ensure: present
+    - name: vector
+      ensure: present
+    - name: pg_trgm
       ensure: present
